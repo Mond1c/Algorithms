@@ -73,4 +73,17 @@ namespace algorithms {
         if (begin < r) QuickSort(begin, std::next(r));
         if (l < end) QuickSort(l, end);
     }
+
+    template<typename Iterator>
+    void SelectionSort(Iterator begin, Iterator end) {
+        if (std::distance(begin, end) <= 1) return;
+        Iterator it1, it2, minIt;
+        for (it1 = begin; it1 < std::prev(end); it1 = std::next(it1)) {
+            minIt = it1;
+            for (it2 = std::next(it1); it2 < end; it2 = std::next(it2)) {
+                if (*it2 < *minIt) minIt = it2;
+            }
+            std::swap(*it1, *minIt);
+        }
+    }
 }
