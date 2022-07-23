@@ -55,4 +55,22 @@ namespace algorithms {
             }
         }
     }
+
+    template<typename Iterator>
+    void QuickSort(Iterator begin, Iterator end) {
+        if (std::distance(begin, end) <= 1) return;
+        auto value = *(begin + std::distance(begin, end) / 2);
+        Iterator l = begin, r = std::prev(end);
+        while (l <= r) {
+            while (*l < value) l = std::next(l);
+            while (*r > value) r = std::prev(r);
+            if (l <= r) {
+                std::swap(*l, *r);
+                l = std::next(l);
+                r = std::prev(r);
+            }
+        }
+        if (begin < r) QuickSort(begin, std::next(r));
+        if (l < end) QuickSort(l, end);
+    }
 }
