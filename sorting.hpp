@@ -22,26 +22,36 @@ namespace algorithms {
 
     template<typename Iterator>
     void ShakeSort(Iterator begin, Iterator end) {
-        int sz = end - begin;
-        if (sz <= 1) return;
+        if (std::distance(begin, end) <= 1) return;
         bool needToSort = true;
-        Iterator start = begin - 1;
-        Iterator finish = end - 1;
+        Iterator start = std::prev(begin);
+        Iterator finish = std::prev(end);
         while (needToSort) {
             needToSort = false;
-            ++start;
-            for (Iterator it = start; it < finish; ++it) {
-                if (*it > *(it + 1)) {
-                    std::swap(*it, *(it + 1));
+            start = std::next(start);
+            for (Iterator it = start; it < finish; it = std::next(it)) {
+                if (*it > *std::next(it)) {
+                    std::swap(*it, *std::next(it));
                     needToSort = true;
                 }
             }
             if (!needToSort) return;
-            --end;
-            for (Iterator it = end; it > begin; --it) {
-                if (*it < *(it - 1)) {
-                    std::swap(*it, *(it - 1));
+            end = std::prev(end);
+            for (Iterator it = end; it > begin; it = std::prev(it)) {
+                if (*it < *std::prev(it)) {
+                    std::swap(*it, *std::prev(it));
                 }
+            }
+        }
+    }
+
+    template<typename Iterator>
+    void InsertionSort(Iterator begin, Iterator end) {
+        for (Iterator it = std::next(begin); it < end; it = std::next(it)) {
+            Iterator a = it;
+            while (a > begin && *std::prev(a) > *a) {
+                std::swap(*std::prev(a), *a);
+                a = std::prev(a);
             }
         }
     }
