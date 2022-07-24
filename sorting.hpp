@@ -1,5 +1,6 @@
 #pragma once
 #include <iterator>
+#include <iostream>
 
 namespace algorithms {
     template<typename Iterator>
@@ -8,40 +9,41 @@ namespace algorithms {
         while (needToSort) {
             needToSort = false;
             Iterator slow = begin;
-            Iterator fast = std::next(slow);
+            Iterator fast = slow;
+            ++fast;
             while (fast != end) {
                 if (*fast < *slow) {
                     std::swap(*fast, *slow);
                     needToSort = true;
                 }
-                fast = std::next(fast);
-                slow = std::next(slow);
+                ++fast;
+                ++slow;
             }
         }
     }
 
     template<typename Iterator>
     void ShakeSort(Iterator begin, Iterator end) {
-        if (std::distance(begin, end) <= 1) return;
+        if (!begin || begin == end) return;
         bool needToSort = true;
-        Iterator start = std::prev(begin);
-        Iterator finish = std::prev(end);
+        Iterator start = begin;
+        Iterator finish = end - 1;
         while (needToSort) {
             needToSort = false;
-            start = std::next(start);
-            for (Iterator it = start; it < finish; it = std::next(it)) {
-                if (*it > *std::next(it)) {
-                    std::swap(*it, *std::next(it));
+            for (Iterator it = start; it != end; ++it) {
+                if (*it > *(it + 1)) {
+                    std::swap(*it, *(it + 1));
                     needToSort = true;
                 }
             }
+            ++start;
             if (!needToSort) return;
-            end = std::prev(end);
-            for (Iterator it = end; it > begin; it = std::prev(it)) {
-                if (*it < *std::prev(it)) {
-                    std::swap(*it, *std::prev(it));
+            for (Iterator it = finish; it != begin; --it) {
+                if (*it < *(it - 1)) {
+                    std::swap(*it, *(it - 1));
                 }
             }
+            --finish;
         }
     }
 
@@ -58,7 +60,7 @@ namespace algorithms {
 
     template<typename Iterator>
     void QuickSort(Iterator begin, Iterator end) {
-        if (std::distance(begin, end) <= 1) return;
+        if (!begin || begin == end) return;
         auto value = *(begin + std::distance(begin, end) / 2);
         Iterator l = begin, r = std::prev(end);
         while (l <= r) {

@@ -2,3 +2,9 @@
 a.exe
 sorting.hpp.gch
 main.cpp
+Algorithms
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+debug.h
